@@ -1,21 +1,62 @@
 class Handle_file
   def create_file(key_word, file)
-    if key_word == "create" && !File.file?(file)
-      File.new(file, File::CREAT)
-    elsif File.file?(file) == true
-      puts "file exists"
+    begin
+      if key_word == "create" && !File.file?(file)
+        File.new(file, File::CREAT)
+      elsif File.file?(file) == true
+        puts "file exists"
+      end
+    rescue
+      puts "An error has occured"
     end
   end
   def delete_file(key_word, file)
     f = File.open(file)
     if key_word == "delete" && File.file?(file)
-      File.delete(f)
+      begin
+        File.delete(f)
+      rescue
+        puts "An error has occured"
+      end
     end
   end
   def close_file(key_word, file)
     f = File.open(file)
     if key_word == "close"
-      f.close
+      begin
+        f.close
+      rescue
+        puts "An error has occured"
+      end
+    end
+  end
+  def read_file(key_word, file)
+    if key_word == "read"
+      begin
+        f = File.open(file)
+        f = f.read
+        puts f
+      rescue
+        puts "An error has occured"
+      end
+    end
+  end
+  def append_file(key_word, mode, file, data)
+    if key_word == "append" && mode == "nl"
+      begin
+        data = data.tr("_", " ")
+        File.write(file, data + "\n ", mode: 'a')
+      rescue
+        puts "An error has occured"
+      end
+    end
+    if key_word == "append" && mode == "space"
+      begin
+        data = data.tr("_", " ")
+        File.write(file, data + " ", mode: 'a')
+      rescue
+        puts "An error has occured"
+      end
     end
   end
 end
@@ -40,5 +81,13 @@ while true
   if command[0] == "close"
     entry = Handle_file.new
     entry.close_file(command[0], command[1])
+  end
+  if command[0] == "read"
+    entry = Handle_file.new
+    entry.read_file(command[0], command[1])
+  end
+  if command[0] == "append"
+    entry = Handle_file.new
+    entry.append_file(command[0], command[1], command[2], command[3])
   end
 end
