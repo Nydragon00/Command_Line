@@ -62,17 +62,30 @@ class Handle_file
 end
 
 class Help
-  def help()
+  def man()
+
     puts "\nWich page do you want to open? " #add the different topics
-    option = gets.chomp
-    case option
-    when "1"
-      puts "\nWe got help to 5 elements: \ncreate \ndelete \nclose \nread \nappend\n\n"
-      choice = gets.chomp
-      if ["create", "delete", "close", "read", "append"].include?choice
-        if choice == "create"
-          puts "create is:"
+    while true
+      option = gets.chomp
+      case option
+      when "1"
+        puts "\nWe got help to 5 elements: \ncreate \ndelete \nclose \nread \nappend\n\n"
+        while true
+          choice = gets.chomp
+          if ["create", "delete", "close", "read", "append"].include?choice
+            if choice == "create"
+              puts "create is:"
+            end
+          end
+          if choice == "end"
+            puts "End has been registrated"
+            break
+          end
         end
+      end
+      if option == "end"
+        puts "End has been registrated"
+        break
       end
     end
   end
@@ -107,8 +120,8 @@ while true
     entry = Handle_file.new
     entry.append_file(command[0], command[1], command[2], command[3])
   end
-  if command[0] == "help"
+  if command[0] == "man"
     entry = Help.new
-    entry.help()
+    entry.man()
   end
 end
