@@ -74,19 +74,19 @@ class Help
           choice = gets.chomp
           if ["create", "delete", "close", "read", "append"].include?choice
             if choice == "create"
-              puts "\ncreate is:"
+              puts "\nCREATE: takes 2 parameters, create and filename with extension\nyou want to create, you can aswell specify the directory. If you do not specifiy the directory\nthe file will be created in the directory of the program. \nExample: create G:/test.txt"
             end
             if choice == "delete"
-              puts "\ndelete is:"
+              puts "\nDELETE: Do not ask about this option..."
             end
             if choice == "close"
-              puts "\nclose is:"
+              puts "\nCLOSE: takes 2 parameters, close and filename with extension\nyou want to close, you can aswell specify the directory. If you do not specifiy the directory\nthe file in the directory of the program will be closed.\nExample: close G:/test.txt"
             end
             if choice == "read"
-              puts "\nread is:"
+              puts "\nREAD: takes 2 parameters, read and filename with extension\nyou want to read, you can aswell specify the directory. If you do not specifiy the directory\nthe file in the directory of the program will be read.\nExample: read G:/test.txt"
             end
             if choice == "append"
-              puts "\nappend is:"
+              puts "\nAPPEND: takes 4 parameters, append, mode, filename with extension\nyou want to append your string and finally the string you want to append.\nYou can aswell specify the directory, if you do not specifiy the directory\nthe sttring will be appended to the file in the directory of the program.\nExample: read G:/test.txt"
             end
           end
           if choice == "end"
