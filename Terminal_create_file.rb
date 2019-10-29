@@ -55,7 +55,7 @@ class Handle_file
     if key_word == "append" && mode == "space"
       begin
         data = data.tr("_", " ")
-        File.write(file, " " + data, mode: 'a')
+        File.write(file, data + " ", mode: 'a')
       rescue
         puts "An error has occured."
       end
@@ -79,86 +79,23 @@ class Handle_file
       end
     end
   end
-end
-
-class Help
-  def man()
-    while true
-      print "\nWich page do you want to open: " #add the different topics
-      option = gets.chomp
-      case option
-      when "2"
-        puts "\nWe got help for 7 elements: \n-create \n-delete \n-close \n-read \n-append \n-count lines \n-rename"
-        while true
-          print "\nEnter your choice: "
-          choice = gets.chomp
-          if ["create", "delete", "close", "read", "append", "count lines", "rename"].include?choice
-            if choice == "create"
-              puts "\nCREATE:
-              takes 2 parameters, create and filename with extension
-              you want to create, you can aswell specify the directory. If you do not specifiy the directory
-              the file will be created in the directory of the program.
-              Syntax: [command] [file]
-              Example: create G:/test.txt"
-            end
-            if choice == "delete"
-              puts "\nDELETE:
-              Do not ask about this option..."
-            end
-            if choice == "close"
-              puts "\nCLOSE:
-              takes 2 parameters, close and the filename with extension
-              you want to close, you can aswell specify the directory. If you do not specifiy the directory
-              the file in the directory of the program will be closed.
-              Syntax: [command] [file]
-              Example: close G:/test.txt"
-            end
-            if choice == "read"
-              puts "\nREAD:
-              takes 2 parameters, read and filename with extension
-              you want to read, you can aswell specify the directory. If you do not specifiy the directory
-              the file in the directory of the program will be read. Each line will have the coresponding
-              line count at the beginning of the line.
-              Syntax: [command] [file]
-              Example: read G:/test.txt"
-            end
-            if choice == "append"
-              puts "\nAPPEND:
-              takes 4 parameters, append, mode, filename with extension
-              you want to append your string to and finally the string you want to append.
-              You can aswell specify the directory, if you do not specifiy the directory
-              the string will be appended to the file in the directory of the program.
-              The modes are nl if you want to create a new line and append your string
-              and space if you want to append on the same line. Replace your \" \" with \"_\".
-              Syntax: [command] [mode] [file] [input]
-              Example: append nl G:/test.txt your_new_string"
-            end
-            if choice == "count lines"
-              puts "\nCOUNT LINES:
-              takes 2 parameters, count_lines and the filename with extension.
-              You can aswell specify the directory, if you do not specifiy the directory
-              the file in the folder of the source code will be used.
-              Syntax: [command] [file]
-              Example: count_lines G:/test.txt"
-            end
-            if choice == "rename"
-              puts "\nRENAME:
-              takes 3 parameters, rename, the file name with extension and the new name
-              of this file with extension. You can aswell specify the directory, if you
-              do not specifiy the directory the file in the folder of the source code will be renamed.
-              Syntax: [command] [file] [new]
-              Example: rename toto.txt test.rb"
-            end
-          end
-          if choice == "end"
-            puts "\nEnd has been registrated. You are in the page selection."
-            break
-          end
-        end
+  def open_file(key_word, file)
+    if key_word == "open"
+      begin
+        File.open(file)
+      rescue
+        puts "An error has occured."
       end
-      if option == "end"
-        puts "\nEnd has been registrated. You are in the control selection."
-        break
+    end
+  end
+  def check_status_file(key_word, file)
+    if key_word == "check_status"
+      if File.exists?(file) == true
+        print "[#{file}] exists "
+        bytes = File.size(file)
+        print "and is [#{bytes}] bytes large.\n"
+      else
+        puts "File is closed."
       end
     end
   end
@@ -172,7 +109,129 @@ class Parse
   end
   def goto(key_word, path)
     if key_word == "goto"
-      puts Dir["path"]
+      puts Dir[path]
+    end
+  end
+end
+
+class Help
+  def man()
+    while true
+      print "\nWich page do you want to open: \n1. parsing \n2. handling \n" #add the different topics
+      print "\nEnter your choice: "
+      option = gets.chomp
+      case option
+      when "1"
+        puts "\nWe got help for these elements: \n1. path \n2. goto"
+        while true
+          print "\nEnter your choice: "
+          choice = gets.chomp
+          if ["1", "2"].include?choice
+            if choice == "1"
+              puts "\nPATH:
+              takes 1 paramenter, the file name.
+              Shows the path of this file, no more, no less.
+              Syntax: [command]
+              Example: path"
+            end
+            if choice == "2"
+              puts "\nGOTO:
+              takes 2 parameters, goto and the path. You can inspect other directories
+              and see the files thew contain. Use an absolute path if possible or
+              stay in the branch of this file.
+              to parse it with a relative path.
+              Syntax: [command] [path]
+              Example: goto G:/"
+            end
+          end
+          if choice == "end"
+            puts "\nEnd has been registrated. You are in the page selection."
+            break
+          end
+        end
+      when "2"
+        puts "\nWe got help for these elements: \n1. create \n2. delete \n3. close \n4. read \n5. append \n6. count lines \n7. rename \n8. open"
+        while true
+          print "\nEnter your choice: "
+          choice = gets.chomp
+          if ["1", "2", "3", "4", "5", "6", "7", "8", "9"].include?choice
+            if choice == "1"
+              puts "\nCREATE:
+              takes 2 parameters, create and filename with extension
+              you want to create, you can aswell specify the directory. If you do not specifiy the directory
+              the file will be created in the directory of the program.
+              Syntax: [command] [file]
+              Example: create G:/test.txt"
+            end
+            if choice == "2"
+              puts "\nDELETE:
+              Do not ask about this option..."
+            end
+            if choice == "3"
+              puts "\nCLOSE:
+              takes 2 parameters, close and the filename with extension
+              you want to close, you can aswell specify the directory. If you do not specifiy the directory
+              the file in the directory of the program will be closed.
+              Syntax: [command] [file]
+              Example: close G:/test.txt"
+            end
+            if choice == "4"
+              puts "\nREAD:
+              takes 2 parameters, read and filename with extension
+              you want to read, you can aswell specify the directory. If you do not specifiy the directory
+              the file in the directory of the program will be read. Each line will have the coresponding
+              line count at the beginning of the line.
+              Syntax: [command] [file]
+              Example: read G:/test.txt"
+            end
+            if choice == "5"
+              puts "\nAPPEND:
+              takes 4 parameters, append, mode, filename with extension
+              you want to append your string to and finally the string you want to append.
+              You can aswell specify the directory, if you do not specifiy the directory
+              the string will be appended to the file in the directory of the program.
+              The modes are nl if you want to create a new line and append your string
+              and space if you want to append on the same line. Replace your \" \" with \"_\".
+              Syntax: [command] [mode] [file] [input]
+              Example: append nl G:/test.txt your_new_string"
+            end
+            if choice == "6"
+              puts "\nCOUNT LINES:
+              takes 2 parameters, count_lines and the filename with extension.
+              You can aswell specify the directory, if you do not specifiy the directory
+              the file in the folder of the source code will be used.
+              Syntax: [command] [file]
+              Example: count_lines G:/test.txt"
+            end
+            if choice == "7"
+              puts "\nRENAME:
+              takes 3 parameters, rename, the file name with extension and the new name
+              of this file with extension. You can aswell specify the directory, if you
+              do not specifiy the directory the file in the folder of the source code will be renamed.
+              Syntax: [command] [file] [new]
+              Example: rename toto.txt test.rb"
+            end
+            if choice == "8"
+              puts "\nOPEN:
+              takes 2 parameters, open and the file name with extension. You can specifiy the
+              file path if wou want to open a file in another directory.
+              Syntax: [command] [file]
+              Example: open G:/test.txt"
+            end
+            if choice == "9"
+              #enter explanation for check_status
+            end
+          end
+          if choice == "end"
+            puts "\nEnd has been registered. You are in the page selection."
+            break
+          end
+        end
+      end
+      if option == "end"
+        puts "\nEnd has been registered. You are in the control selection."
+        break
+      end
     end
   end
 end
@@ -202,18 +261,24 @@ def core
     when "append"
       entry = Handle_file.new
       entry.append_file(command[0], command[1], command[2], command[3])
-    when "count lines"
+    when "count_lines"
       entry = Handle_file.new
       entry.count_lines_file(command[0], command[1])
     when "rename"
       entry = Handle_file.new
       entry.rename_file(command[0], command[1], command[2])
+    when "open"
+      entry = Handle_file.new
+      entry.open_file(command[0], command[1])
+    when "check_status"
+      entry = Handle_file.new
+      entry.check_status_file(command[0], command[1])
     when "path"
       entry = Parse.new
       entry.path(command[0])
     when "goto"
       entry = Parse.new
-      entry.goto(command[0], command[0])
+      entry.goto(command[0], command[1])
     when "man"
       entry = Help.new
       entry.man()
