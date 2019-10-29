@@ -91,9 +91,11 @@ class Handle_file
   def check_status_file(key_word, file)
     if key_word == "check_status"
       if File.exists?(file) == true
-        print "[#{file}] exists "
         bytes = File.size(file)
+        birthtime = File.birthtime(file)
+        print "\n[#{file}] exists "
         print "and is [#{bytes}] bytes large.\n"
+        print "The date of creation of [#{file}] is [#{birthtime}].\n"
       else
         puts "File is closed."
       end
