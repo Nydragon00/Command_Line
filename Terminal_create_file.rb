@@ -1,3 +1,5 @@
+require "FileUtils"
+
 class Handle_file
   def create_file(key_word, file)
     begin
@@ -11,9 +13,9 @@ class Handle_file
     end
   end
   def delete_file(key_word, file)
-    if key_word == "delete" && File.file?(file)
+    if key_word == "delete"
       begin
-        f = File.open(file)
+        f = File.close(file)
         File.delete(f)
       rescue
         puts "An error has occured."
@@ -101,6 +103,15 @@ class Handle_file
       end
     end
   end
+  def move_file(key_word, file, destination)
+    if key_word == "move"
+      begin
+        FileUtils.move(file, destination)
+      rescue
+        puts "An error has occured."
+      end
+    end
+  end
 end
 
 class Parse
@@ -156,7 +167,7 @@ class Help
         while true
           print "\nEnter your choice: "
           choice = gets.chomp
-          if ["1", "2", "3", "4", "5", "6", "7", "8", "9"].include?choice
+          if ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].include?choice
             if choice == "1"
               puts "\nCREATE:
               takes 2 parameters, create and filename with extension
@@ -221,12 +232,20 @@ class Help
               Example: open G:/test.txt"
             end
             if choice == "9"
-              puts "\n CHECK_STATUS:
+              puts "\nCHECK_STATUS:
               takes 2 parameters, check_status and the file name with extension. You can specify
               the file path if u want to open a file in another directory. This command prints if the
               file exists, its size and date of creation (may add it's open/closed status).
               Syntax: [command] [file]
               Example: check_status G:/test.txt"
+            end
+            if choice == "10"
+              puts "\nMOVE:
+              takes 3 parameters, move, the file & extension wou want to move and its target location.
+              Note: if you want to move the file to another branch, then you need the absolute
+              location. The target location has to be a directory, otherwise it will cause an error.
+              Syntax: [command] [file] [target location]
+              Example: move G:/test.txt C:/example_target"
             end
           end
           if choice == "end"
@@ -280,6 +299,9 @@ def core
     when "check_status"
       entry = Handle_file.new
       entry.check_status_file(command[0], command[1])
+    when "move"
+      entry = Handle_file.new
+      entry.move_file(command[0], command[1], command[2])
     when "path"
       entry = Parse.new
       entry.path(command[0])
