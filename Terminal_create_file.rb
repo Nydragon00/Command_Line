@@ -152,7 +152,7 @@ class Help
           end
         end
       when "2"
-        puts "\nWe got help for these elements: \n1. create \n2. delete \n3. close \n4. read \n5. append \n6. count lines \n7. rename \n8. open"
+        puts "\nWe got help for these elements: \n1. create \n2. delete \n3. close \n4. read \n5. append \n6. count lines \n7. rename \n8. open \n9. check status"
         while true
           print "\nEnter your choice: "
           choice = gets.chomp
@@ -221,7 +221,12 @@ class Help
               Example: open G:/test.txt"
             end
             if choice == "9"
-              #enter explanation for check_status
+              puts "\n CHECK_STATUS:
+              takes 2 parameters, check_status and the file name with extension. You can specify
+              the file path if u want to open a file in another directory. This command prints if the
+              file exists, its size and date of creation (may add it's open/closed status).
+              Syntax: [command] [file]
+              Example: check_status G:/test.txt"
             end
           end
           if choice == "end"
