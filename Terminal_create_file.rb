@@ -45,7 +45,7 @@ class Handle_file
     if key_word == "append" && mode == "nl"
       begin
         data = data.tr("_", " ")
-        File.write(file, data + "\n ", mode: 'a')
+        File.write(file, "\n" + data, mode: 'a')
       rescue
         puts "An error has occured."
       end
@@ -53,7 +53,16 @@ class Handle_file
     if key_word == "append" && mode == "space"
       begin
         data = data.tr("_", " ")
-        File.write(file, data + " ", mode: 'a')
+        File.write(file, " " + data, mode: 'a')
+      rescue
+        puts "An error has occured."
+      end
+    end
+  end
+  def count_lines_file(key_word, file)
+    if key_word == "count_lines"
+      begin
+        puts File.foreach(file).count
       rescue
         puts "An error has occured."
       end
@@ -67,7 +76,7 @@ class Help
       print "\nWich page do you want to open: " #add the different topics
       option = gets.chomp
       case option
-      when "1"
+      when "2"
         puts "\nWe got help for 5 elements: \n-create \n-delete \n-close \n-read \n-append\n"
         while true
           print "\nEnter your choice: "
@@ -78,6 +87,7 @@ class Help
               takes 2 parameters, create and filename with extension
               you want to create, you can aswell specify the directory. If you do not specifiy the directory
               the file will be created in the directory of the program.
+              Syntax: [command] [file]
               Example: create G:/test.txt"
             end
             if choice == "delete"
@@ -89,6 +99,7 @@ class Help
               takes 2 parameters, close and the filename with extension
               you want to close, you can aswell specify the directory. If you do not specifiy the directory
               the file in the directory of the program will be closed.
+              Syntax: [command] [file]
               Example: close G:/test.txt"
             end
             if choice == "read"
@@ -96,6 +107,7 @@ class Help
               takes 2 parameters, read and filename with extension
               you want to read, you can aswell specify the directory. If you do not specifiy the directory
               the file in the directory of the program will be read.
+              Syntax: [command] [file]
               Example: read G:/test.txt"
             end
             if choice == "append"
@@ -104,17 +116,20 @@ class Help
               you want to append your string to and finally the string you want to append.
               You can aswell specify the directory, if you do not specifiy the directory
               the string will be appended to the file in the directory of the program.
-              Example: read G:/test.txt"
+              The modes are nl if you want to create a new line and append your string
+              and space if you want to append on the same line. Replace your \" \" with \"_\".
+              Syntax: [command] [mode] [file] [input]
+              Example: append nl G:/test.txt your_new_string"
             end
           end
           if choice == "end"
-            puts "\nEnd has been registrated."
+            puts "\nEnd has been registrated. You are in the page selection."
             break
           end
         end
       end
       if option == "end"
-        puts "\nEnd has been registrated."
+        puts "\nEnd has been registrated. You are in the control selection."
         break
       end
     end
@@ -146,8 +161,10 @@ def core
     when "append"
       entry = Handle_file.new
       entry.append_file(command[0], command[1], command[2], command[3])
-    end
-    if command[0] == "man"
+    when "count_lines"
+      entry = Handle_file.new
+      entry.count_lines_file(command[0], command[1])
+    when "man"
       entry = Help.new
       entry.man()
     end
@@ -155,3 +172,4 @@ def core
 end
 
 core()
+#puts Dir["C:/Users/Nydragon/Desktop/*"]
