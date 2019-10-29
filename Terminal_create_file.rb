@@ -34,8 +34,10 @@ class Handle_file
     if key_word == "read"
       begin
         f = File.open(file)
-        f = f.read
-        puts f
+        line_num=0
+        File.open(file).each do |line|
+          print "#{line_num += 1} #{line.chomp} \n"
+        end
       rescue
         puts "An error has occured"
       end
@@ -68,6 +70,15 @@ class Handle_file
       end
     end
   end
+  def rename_file(key_word, file, new_name)
+    if key_word == "rename"
+      begin
+        File.rename(file, new_name)
+      rescue
+        puts "An error has occured."
+      end
+    end
+  end
 end
 
 class Help
@@ -77,11 +88,11 @@ class Help
       option = gets.chomp
       case option
       when "2"
-        puts "\nWe got help for 5 elements: \n-create \n-delete \n-close \n-read \n-append\n"
+        puts "\nWe got help for 7 elements: \n-create \n-delete \n-close \n-read \n-append \n-count lines \n-rename"
         while true
           print "\nEnter your choice: "
           choice = gets.chomp
-          if ["create", "delete", "close", "read", "append"].include?choice
+          if ["create", "delete", "close", "read", "append", "count lines", "rename"].include?choice
             if choice == "create"
               puts "\nCREATE:
               takes 2 parameters, create and filename with extension
@@ -106,7 +117,8 @@ class Help
               puts "\nREAD:
               takes 2 parameters, read and filename with extension
               you want to read, you can aswell specify the directory. If you do not specifiy the directory
-              the file in the directory of the program will be read.
+              the file in the directory of the program will be read. Each line will have the coresponding
+              line count at the beginning of the line.
               Syntax: [command] [file]
               Example: read G:/test.txt"
             end
@@ -121,6 +133,22 @@ class Help
               Syntax: [command] [mode] [file] [input]
               Example: append nl G:/test.txt your_new_string"
             end
+            if choice == "count lines"
+              puts "\nCOUNT LINES:
+              takes 2 parameters, count_lines and the filename with extension.
+              You can aswell specify the directory, if you do not specifiy the directory
+              the file in the folder of the source code will be used.
+              Syntax: [command] [file]
+              Example: count_lines G:/test.txt"
+            end
+            if choice == "rename"
+              puts "\nRENAME:
+              takes 3 parameters, rename, the file name with extension and the new name
+              of this file with extension. You can aswell specify the directory, if you
+              do not specifiy the directory the file in the folder of the source code will be renamed.
+              Syntax: [command] [file] [new]
+              Example: rename toto.txt test.rb"
+            end
           end
           if choice == "end"
             puts "\nEnd has been registrated. You are in the page selection."
@@ -132,6 +160,19 @@ class Help
         puts "\nEnd has been registrated. You are in the control selection."
         break
       end
+    end
+  end
+end
+
+class Parse
+  def path(key_word)
+    if key_word == "path"
+      puts Dir.pwd
+    end
+  end
+  def goto(key_word, path)
+    if key_word == "goto"
+      puts Dir["path"]
     end
   end
 end
@@ -161,9 +202,18 @@ def core
     when "append"
       entry = Handle_file.new
       entry.append_file(command[0], command[1], command[2], command[3])
-    when "count_lines"
+    when "count lines"
       entry = Handle_file.new
       entry.count_lines_file(command[0], command[1])
+    when "rename"
+      entry = Handle_file.new
+      entry.rename_file(command[0], command[1], command[2])
+    when "path"
+      entry = Parse.new
+      entry.path(command[0])
+    when "goto"
+      entry = Parse.new
+      entry.goto(command[0], command[0])
     when "man"
       entry = Help.new
       entry.man()
@@ -172,4 +222,3 @@ def core
 end
 
 core()
-#puts Dir["C:/Users/Nydragon/Desktop/*"]
