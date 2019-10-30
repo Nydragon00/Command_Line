@@ -130,7 +130,6 @@ class Parse
   def goto(key_word, path)
     if key_word == "goto"
       puts Dir[path]
-      puts path
     end
   end
 end
@@ -281,41 +280,41 @@ def core
       puts "\nEnd has been registrated."
       break
     when "create"
-      entry = Handle_file.new command[1]
+      entry = Handle_file.new(command[1])
       entry.create_file(command[0])
     when "delete"
-      entry = Handle_file.new command[1]
-      entry.delete_file command[0]
+      entry = Handle_file.new(command[1])
+      entry.delete_file(command[0])
     when "close"
-      entry = Handle_file.new command[1]
-      entry.close_file command[0]
+      entry = Handle_file.new(command[1])
+      entry.close_file(command[0])
     when "read"
-      entry = Handle_file.new command[1]
-      entry.read_file command[0]
+      entry = Handle_file.new(command[1])
+      entry.read_file(command[0])
     when "append"
-      entry = Handle_file.new command[1]
-      entry.append_file command[0], command[2], command[3]
+      entry = Handle_file.new(command[1])
+      entry.append_file(command[0], command[2], command[3])
     when "count_lines"
-      entry = Handle_file.new command[1]
-      entry.count_lines_file command[0]
+      entry = Handle_file.new(command[1])
+      entry.count_lines_file(command[0])
     when "rename"
-      entry = Handle_file.new command[1]
+      entry = Handle_file.new(command[1])
       entry.rename_file(command[0], command[2])
     when "open"
-      entry = Handle_file.new command[1]
-      entry.open_file command[0]
+      entry = Handle_file.new(command[1])
+      entry.open_file(command[0])
     when "check_status"
-      entry = Handle_file.new command[1]
-      entry.check_status_file command[0]
+      entry = Handle_file.new(command[1])
+      entry.check_status_file(command[0])
     when "move"
-      entry = Handle_file.new command[1]
-      entry.move_file command[0] command[2]
+      entry = Handle_file.new(command[1])
+      entry.move_file(command[0], command[2])
     when "path"
       entry = Parse.new
-      entry.path command[0]
+      entry.path(command[0])
     when "goto"
-      entry = Parse.new command[1]
-      entry.goto command[0]
+      entry = Parse.new
+      entry.goto(command[0], command[1])
     when "man"
       entry = Help.new
       entry.man()
