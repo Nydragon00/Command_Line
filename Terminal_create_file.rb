@@ -132,6 +132,9 @@ class Parse
       puts Dir[path]
     end
   end
+  def search(key_word, start, file)
+      puts Dir[start.tr("\\", "/") + "/**/" + file.tr("\\", "/")]
+  end
 end
 
 class Help
@@ -315,6 +318,9 @@ def core
     when "goto"
       entry = Parse.new
       entry.goto(command[0], command[1])
+    when "search"
+      entry = Parse.new
+      entry.search(command[0], command[1], command[2])
     when "man"
       entry = Help.new
       entry.man()
