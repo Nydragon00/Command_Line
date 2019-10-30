@@ -1,29 +1,36 @@
 require "FileUtils"
 
+
+
 class Handle_file
-  def create_file(key_word, file)
+
+  def initialize(file_param)
+    @file = file_param
+  end
+
+  def create_file(key_word)
     begin
-      if key_word == "create" && !File.file?(file)
-        File.new(file, File::CREAT)
-      elsif File.file?(file) == true
+      if key_word == "create" && !File.file?(@file)
+        File.new(@file, File::CREAT)
+      elsif File.file?(@file) == true
         puts "\nFile exists."
       end
     rescue
       puts "An error has occured."
     end
   end
-  def delete_file(key_word, file)
+  def delete_file(key_word)
     if key_word == "delete"
       begin
-        f = File.close(file)
+        f = File.close(@file)
         File.delete(f)
       rescue
         puts "An error has occured."
       end
     end
   end
-  def close_file(key_word, file)
-    f = File.open(file)
+  def close_file(key_word)
+    f = File.open(@file)
     if key_word == "close"
       begin
         f.close
@@ -32,12 +39,12 @@ class Handle_file
       end
     end
   end
-  def read_file(key_word, file)
+  def read_file(key_word)
     if key_word == "read"
       begin
-        f = File.open(file)
+        f = File.open(@file)
         line_num=0
-        File.open(file).each do |line|
+        File.open(@file).each do |line|
           print "#{line_num += 1} #{line.chomp} \n"
         end
       rescue
@@ -45,11 +52,11 @@ class Handle_file
       end
     end
   end
-  def append_file(key_word, mode, file, data)
+  def append_file(key_word, mode, data)
     if key_word == "append" && mode == "nl"
       begin
         data = data.tr("_", " ")
-        File.write(file, "\n" + data, mode: 'a')
+        File.write(@file, "\n" + data, mode: 'a')
       rescue
         puts "An error has occured."
       end
@@ -57,56 +64,56 @@ class Handle_file
     if key_word == "append" && mode == "space"
       begin
         data = data.tr("_", " ")
-        File.write(file, data + " ", mode: 'a')
+        File.write(@file, data + " ", mode: 'a')
       rescue
         puts "An error has occured."
       end
     end
   end
-  def count_lines_file(key_word, file)
+  def count_lines_file(key_word)
     if key_word == "count_lines"
       begin
-        puts File.foreach(file).count
+        puts File.foreach(@file).count
       rescue
         puts "An error has occured."
       end
     end
   end
-  def rename_file(key_word, file, new_name)
+  def rename_file(key_word, new_name)
     if key_word == "rename"
       begin
-        File.rename(file, new_name)
+        File.rename(@file, new_name)
       rescue
         puts "An error has occured."
       end
     end
   end
-  def open_file(key_word, file)
+  def open_file(key_word)
     if key_word == "open"
       begin
-        File.open(file)
+        File.open(@file)
       rescue
         puts "An error has occured."
       end
     end
   end
-  def check_status_file(key_word, file)
+  def check_status_file(key_word)
     if key_word == "check_status"
-      if File.exists?(file) == true
-        bytes = File.size(file)
-        birthtime = File.birthtime(file)
-        print "\n[#{file}] exists "
+      if File.exists?(@file) == true
+        bytes = File.size(@file)
+        birthtime = File.birthtime(@file)
+        print "\n[#{@file}] exists "
         print "and is [#{bytes}] bytes large.\n"
-        print "The date of creation of [#{file}] is [#{birthtime}].\n"
+        print "The date of creation of [#{@file}] is [#{birthtime}].\n"
       else
         puts "File is closed."
       end
     end
   end
-  def move_file(key_word, file, destination)
+  def move_file(key_word, destination)
     if key_word == "move"
       begin
-        FileUtils.move(file, destination)
+        FileUtils.move(@file, destination)
       rescue
         puts "An error has occured."
       end
@@ -123,6 +130,7 @@ class Parse
   def goto(key_word, path)
     if key_word == "goto"
       puts Dir[path]
+      puts path
     end
   end
 end
@@ -141,7 +149,7 @@ class Help
           choice = gets.chomp
           if ["1", "2"].include?choice
             if choice == "1"
-              puts "\nPATH:
+                puts "\nPATH:
               takes 1 paramenter, the file name.
               Shows the path of this file, no more, no less.
               Syntax: [command]
@@ -273,41 +281,41 @@ def core
       puts "\nEnd has been registrated."
       break
     when "create"
-      entry = Handle_file.new
-      entry.create_file(command[0], command[1])
+      entry = Handle_file.new command[1]
+      entry.create_file(command[0])
     when "delete"
-      entry = Handle_file.new
-      entry.delete_file(command[0], command[1])
+      entry = Handle_file.new command[1]
+      entry.delete_file command[0]
     when "close"
-      entry = Handle_file.new
-      entry.close_file(command[0], command[1])
+      entry = Handle_file.new command[1]
+      entry.close_file command[0]
     when "read"
-      entry = Handle_file.new
-      entry.read_file(command[0], command[1])
+      entry = Handle_file.new command[1]
+      entry.read_file command[0]
     when "append"
-      entry = Handle_file.new
-      entry.append_file(command[0], command[1], command[2], command[3])
+      entry = Handle_file.new command[1]
+      entry.append_file command[0], command[2], command[3]
     when "count_lines"
-      entry = Handle_file.new
-      entry.count_lines_file(command[0], command[1])
+      entry = Handle_file.new command[1]
+      entry.count_lines_file command[0]
     when "rename"
-      entry = Handle_file.new
-      entry.rename_file(command[0], command[1], command[2])
+      entry = Handle_file.new command[1]
+      entry.rename_file(command[0], command[2])
     when "open"
-      entry = Handle_file.new
-      entry.open_file(command[0], command[1])
+      entry = Handle_file.new command[1]
+      entry.open_file command[0]
     when "check_status"
-      entry = Handle_file.new
-      entry.check_status_file(command[0], command[1])
+      entry = Handle_file.new command[1]
+      entry.check_status_file command[0]
     when "move"
-      entry = Handle_file.new
-      entry.move_file(command[0], command[1], command[2])
+      entry = Handle_file.new command[1]
+      entry.move_file command[0] command[2]
     when "path"
       entry = Parse.new
-      entry.path(command[0])
+      entry.path command[0]
     when "goto"
-      entry = Parse.new
-      entry.goto(command[0], command[1])
+      entry = Parse.new command[1]
+      entry.goto command[0]
     when "man"
       entry = Help.new
       entry.man()
