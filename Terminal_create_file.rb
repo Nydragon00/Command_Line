@@ -1,8 +1,4 @@
-begin
-  require "FileUtils"
-rescue
-  require "fileutils"
-end
+require "fileutils"
 
 
 

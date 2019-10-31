@@ -1,3 +1,3 @@
 require 'launchy'
 
-Launchy.open("C:/Users/Nydragon/Desktop/Baliberty/BONUS VIDEOS/Manta.mp4")
+Launchy.open("https://youtu.be/rEq1Z0bjdwc?t=7")
