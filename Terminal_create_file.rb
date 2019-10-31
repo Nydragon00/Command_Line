@@ -133,7 +133,7 @@ class Parse
     end
   end
   def search(key_word, start, file)
-      puts Dir[start.tr("\\", "/") + "/**/" + file.tr("\\", "/")]
+      puts Dir[start.tr("\\", "/") + "**/" + file.tr("\\", "/")]
   end
 end
 
