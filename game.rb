@@ -208,7 +208,7 @@ class Fight
           @pdef += 3
           system("clear")
           system("cls")
-          puts "You have increased your stats by 3, total def: #{@pdef}"
+          puts "You have increased your defense by 3, total def: #{@pdef}"
           sleep 2
         else
           puts "You dont have enough mana!"
@@ -327,6 +327,5 @@ intro = Intro.new
 
 intro.welcome(player_character[0], player_character[1])
 
-fight = Fight.new(player_character[2], player_character[3], player_character[4], player_character[5], stats_enemy[0], stats_enemy[1], stats_enemy[2], player_character[1])
-
-fight.combat
+#fight = Fight.new(player_character[2], player_character[3], player_character[4], player_character[5], stats_enemy[0], stats_enemy[1], stats_enemy[2], player_character[1])
+#fight.combat
