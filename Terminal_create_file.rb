@@ -19,7 +19,7 @@ class Handle_file
       puts "An error has occured."
     end
   end
-  def delete_file(key_word)
+  def delete_file(key_word) #does not work
     if key_word == "delete"
       begin
         f = File.close(@file)
